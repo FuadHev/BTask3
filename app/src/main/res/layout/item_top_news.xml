@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="newsData"
+            type="com.fuadhev.task3.domain.model.NewsUiModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_news"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="23dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_top_news"
+            android:layout_width="320dp"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            load_url="@{newsData.urlToImage}"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
+            android:background="@drawable/news_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.07"
+            tools:srcCompat="@drawable/news_example" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_news"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.6"
+            android:backgroundTint="@color/light_grey"
+            android:text="@string/news"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            app:cornerRadius="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.068"
+            app:layout_constraintStart_toStartOf="@+id/img_top_news"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.121" />
+
+        <TextView
+            android:id="@+id/txt_news"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="New Music Releases March 25: Ed Sheeran, J Balvin, Maren..."
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:maxLength="60"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_top_news"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/img_top_news" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
