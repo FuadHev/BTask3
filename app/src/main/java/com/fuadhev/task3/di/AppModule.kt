@@ -1,9 +1,7 @@
 package com.fuadhev.task3.di
 
 import android.content.Context
-import androidx.room.Room
-import com.fuadhev.task3.data.local.SavedDAO
-import com.fuadhev.task3.data.local.SavedDB
+import com.fuadhev.task3.common.utils.SharedPrefManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,9 +11,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
+object AppModule {
 
-
-
+    @Singleton
+    @Provides
+    fun provideSharedManager(@ApplicationContext context: Context) = SharedPrefManager(context)
 
 }

@@ -10,7 +10,7 @@ data class SavedDTO (
     val description: String?,
     val publishedAt: String?,
     @PrimaryKey(autoGenerate = false)
-    val title: String?,
+    val title: String,
     val url: String?,
     val urlToImage: String?
 )

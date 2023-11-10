@@ -28,8 +28,11 @@ class TopNewsAdapter : ListAdapter<NewsUiModel, TopNewsAdapter.TopNewsViewHolder
                 txtNews.text= item.title?.let { shortTitle(it,60) }
 
 
+
                 itemNews.setOnClickListener {
+
                     onClick(item)
+
                 }
                 executePendingBindings()
             }
@@ -43,6 +46,7 @@ class TopNewsAdapter : ListAdapter<NewsUiModel, TopNewsAdapter.TopNewsViewHolder
             kisaltilmisMetin
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopNewsViewHolder {
         val view = ItemTopNewsBinding.inflate(LayoutInflater.from(parent.context), parent, false)

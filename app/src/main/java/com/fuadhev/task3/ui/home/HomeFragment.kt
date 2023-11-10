@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.fuadhev.task3.R
 import com.fuadhev.task3.common.base.BaseFragment
@@ -31,6 +32,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         NewsAdapter()
     }
 
+
     override fun observeEvents() {
         viewModel.homeState.observe(viewLifecycleOwner) {
             handleState(it)
@@ -45,10 +47,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun setupListeners() {
 
         newsAdapter.onClick={
+
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(it))
+
         }
         topNewsAdapter.onClick={
+
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(it))
+
         }
 
         searchNews()

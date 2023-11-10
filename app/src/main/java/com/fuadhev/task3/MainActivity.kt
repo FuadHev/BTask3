@@ -19,6 +19,11 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
+        binding.bottomMenu.setOnItemSelectedListener {
+            NavigationUI.onNavDestinationSelected(it,navController)
+            true
+        }
         NavigationUI.setupWithNavController(binding.bottomMenu, navController)
+
     }
 }

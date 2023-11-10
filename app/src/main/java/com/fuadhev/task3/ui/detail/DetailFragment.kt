@@ -6,11 +6,14 @@ import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.fuadhev.task3.R
 import com.fuadhev.task3.common.base.BaseFragment
+import com.fuadhev.task3.common.utils.Extensions.showMessage
 import com.fuadhev.task3.databinding.FragmentDetailBinding
 import com.fuadhev.task3.domain.mapper.Mapper.toSavedDTO
+import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -39,6 +42,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
         }
+        binding.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onCreateFinish() {
@@ -54,9 +60,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
     private fun handleState(state:DetailUiState){
         when(state){
             is DetailUiState.Loading->{   }
-            is DetailUiState.SuccessSaveNews->{   }
-            is DetailUiState.SuccessDeleteSave->{  }
-            is DetailUiState.Error->{   }
+            is DetailUiState.SuccessSaveNews->{  requireActivity().showMessage(state.message,FancyToast.SUCCESS) }
+            is DetailUiState.SuccessDeleteSave->{ requireActivity().showMessage(state.message,FancyToast.SUCCESS)  }
+            is DetailUiState.Error->{  requireActivity().showMessage(state.message,FancyToast.ERROR) }
 
         }
 
