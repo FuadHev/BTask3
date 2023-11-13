@@ -22,9 +22,6 @@ class SavedViewModel @Inject constructor(private val repo: NewsRepository):ViewM
     private val _savedState = MutableLiveData<SavedUiState>()
     val savedState: LiveData<SavedUiState> get() = _savedState
 
-    init {
-        getSaves()
-    }
 
     fun getSaves(){
         viewModelScope.launch {

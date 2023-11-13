@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fuadhev.task3.common.utils.Resource
+import com.fuadhev.task3.common.utils.SharedPrefManager
 import com.fuadhev.task3.domain.mapper.Mapper.toNewUiModelList
 import com.fuadhev.task3.domain.repository.NewsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,11 +14,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repo:NewsRepository) : ViewModel() {
+class HomeViewModel @Inject constructor(private val repo:NewsRepository,private val sp:SharedPrefManager) : ViewModel() {
 
 
     private val _homeState = MutableLiveData<HomeUiState>()
     val homeState: LiveData<HomeUiState> get() = _homeState
+
+    private val _selectedLanguage = MutableLiveData<String>()
+    val selectedLanguage: LiveData<String> get() = _selectedLanguage
+
+
+    fun getLanguage(){
+        _selectedLanguage.value = sp.getLang()?:"en"
+    }
 
     fun getTopNews(lang:String){
         viewModelScope.launch {

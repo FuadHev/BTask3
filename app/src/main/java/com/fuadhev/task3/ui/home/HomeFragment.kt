@@ -1,6 +1,8 @@
 package com.fuadhev.task3.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.fuadhev.task3.R
 import com.fuadhev.task3.common.base.BaseFragment
 import com.fuadhev.task3.common.utils.Extensions.gone
@@ -18,6 +21,7 @@ import com.fuadhev.task3.databinding.FragmentHomeBinding
 import com.fuadhev.task3.ui.home.adapter.NewsAdapter
 import com.fuadhev.task3.ui.home.adapter.TopNewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
@@ -31,20 +35,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private val newsAdapter by lazy {
         NewsAdapter()
     }
+    private var lang="en"
+
+
 
 
     override fun observeEvents() {
         viewModel.homeState.observe(viewLifecycleOwner) {
             handleState(it)
         }
+        viewModel.selectedLanguage.observe(viewLifecycleOwner){
+            viewModel.getTopNews(it)
+            lang=it
+            binding.btnLanguage.text=it.toUpperCase(Locale.ROOT)
+        }
+
     }
 
     override fun onCreateFinish() {
-        viewModel.getTopNews("en")
         setAdapters()
+        viewModel.getLanguage()
+
+
     }
 
     override fun setupListeners() {
+
+
 
         newsAdapter.onClick={
 
@@ -55,6 +72,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(it))
 
+        }
+
+        binding.btnLanguage.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLanguageFragment())
+        }
+
+        binding.refreshScreen.setOnRefreshListener {
+             viewModel.getLanguage()
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.refreshScreen.isRefreshing = false
+            }, 1000)
         }
 
         searchNews()
@@ -70,13 +98,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.searchViews("en",s.toString())
+                viewModel.searchViews(lang,s.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
 
                 val searchText = s.toString()
-                viewModel.searchViews("en",searchText)
+                viewModel.searchViews(lang,searchText)
 
             }
         })
@@ -105,6 +133,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                     newsAdapter.submitList(state.list) }
 
                 is HomeUiState.Error->{ loading.gone() }
+                else -> {}
             }
 
         }

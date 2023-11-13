@@ -17,12 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(private val repo: NewsRepository) : ViewModel() {
 
-    private val _detailState = MutableLiveData<DetailUiState>()
-    val detailState: LiveData<DetailUiState> get() = _detailState
+    private val _detailState = MutableLiveData<DetailUiState?>()
+    val detailState: LiveData<DetailUiState?> get() = _detailState
 
 
     fun addSaves(savedDTO: SavedDTO) {
-        viewModelScope.launch {
+       val job= viewModelScope.launch {
             repo.addSaves(savedDTO).collectLatest {
                 when (it) {
                     is Resource.Loading -> {
@@ -39,6 +39,7 @@ class DetailViewModel @Inject constructor(private val repo: NewsRepository) : Vi
                 }
             }
         }
+        job.cancel()
 
     }
 
@@ -72,6 +73,9 @@ class DetailViewModel @Inject constructor(private val repo: NewsRepository) : Vi
             }
         }
 
+    }
+    fun resetData(){
+        _detailState.value=null
     }
 
 }

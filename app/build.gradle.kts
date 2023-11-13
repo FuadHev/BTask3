@@ -49,6 +49,7 @@ android {
 dependencies {
 
     implementation("androidx.palette:palette-ktx:1.0.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     val navVersion = "2.7.4"
     val lifecycleVersion = "2.6.1"
     val lottieVersion = "5.2.0"

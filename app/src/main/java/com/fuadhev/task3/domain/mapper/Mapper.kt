@@ -20,12 +20,12 @@ object Mapper {
     fun List<Article>.toNewUiModelList()=map {
         NewsUiModel(
             it.author?:"Anonym",
-            it.content,
-            it.description,
-            it.publishedAt,
-            it.title,
-            it.url,
-            it.urlToImage
+            it.content?:"No Content",
+            it.description?:"No description",
+            it.publishedAt?:"No date",
+            it.title?:"No Title",
+            it.url?:"",
+            it.urlToImage?:"Removed"
         )
     }
 

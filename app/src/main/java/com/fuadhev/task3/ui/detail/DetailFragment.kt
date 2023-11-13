@@ -31,7 +31,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
         }
         viewModel.detailState.observe(viewLifecycleOwner){
-            handleState(it)
+            it?.let {
+                handleState(it)
+            }
         }
 
     }
@@ -60,11 +62,17 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
     private fun handleState(state:DetailUiState){
         when(state){
             is DetailUiState.Loading->{   }
-            is DetailUiState.SuccessSaveNews->{  requireActivity().showMessage(state.message,FancyToast.SUCCESS) }
-            is DetailUiState.SuccessDeleteSave->{ requireActivity().showMessage(state.message,FancyToast.SUCCESS)  }
-            is DetailUiState.Error->{  requireActivity().showMessage(state.message,FancyToast.ERROR) }
-
+            is DetailUiState.SuccessSaveNews->{
+                requireActivity().showMessage(state.message,FancyToast.SUCCESS)
+                viewModel.resetData()
+            }
+            is DetailUiState.SuccessDeleteSave->{ requireActivity().showMessage(state.message,FancyToast.SUCCESS)
+            viewModel.resetData()}
+            is DetailUiState.Error->{  requireActivity().showMessage(state.message,FancyToast.ERROR)
+            viewModel.resetData()
+            }
         }
+
 
     }
 

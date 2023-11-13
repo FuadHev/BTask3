@@ -27,8 +27,6 @@ class TopNewsAdapter : ListAdapter<NewsUiModel, TopNewsAdapter.TopNewsViewHolder
                 newsData=item
                 txtNews.text= item.title?.let { shortTitle(it,60) }
 
-
-
                 itemNews.setOnClickListener {
 
                     onClick(item)

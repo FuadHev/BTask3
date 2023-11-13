@@ -24,7 +24,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomMenu"
         android:layout_width="0dp"
-
+        app:itemActiveIndicatorStyle="@null"
         app:itemRippleColor="@null"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

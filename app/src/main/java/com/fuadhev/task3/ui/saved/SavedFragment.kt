@@ -38,6 +38,7 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(FragmentSavedBinding::i
 
     override fun onCreateFinish() {
         binding.rvSaved.adapter=newsAdapter
+        viewModel.getSaves()
     }
     private fun handleState(state:SavedUiState){
         with(binding){

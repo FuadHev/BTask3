@@ -15,7 +15,7 @@ object BindingAdapter {
         url?.let {
             Glide.with(view)
                 .load(url)
-                .placeholder(R.color.white)
+                .placeholder(R.drawable.default_img)
                 .into(view)
         }
     }

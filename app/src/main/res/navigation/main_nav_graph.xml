@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_languageFragment"
+            app:destination="@id/languageFragment" />
     </fragment>
     <fragment
         android:id="@+id/savedFragment"
@@ -32,4 +35,9 @@
             android:name="newsDetail"
             app:argType="com.fuadhev.task3.domain.model.NewsUiModel" />
     </fragment>
+    <fragment
+        android:id="@+id/languageFragment"
+        android:name="com.fuadhev.task3.ui.language.LanguageFragment"
+        android:label="fragment_language"
+        tools:layout="@layout/fragment_language" />
 </navigation>
