@@ -22,7 +22,7 @@ class DetailViewModel @Inject constructor(private val repo: NewsRepository) : Vi
 
 
     fun addSaves(savedDTO: SavedDTO) {
-       val job= viewModelScope.launch {
+       viewModelScope.launch {
             repo.addSaves(savedDTO).collectLatest {
                 when (it) {
                     is Resource.Loading -> {
@@ -39,7 +39,7 @@ class DetailViewModel @Inject constructor(private val repo: NewsRepository) : Vi
                 }
             }
         }
-        job.cancel()
+
 
     }
 
