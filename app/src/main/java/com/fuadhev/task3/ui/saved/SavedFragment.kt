@@ -24,33 +24,42 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(FragmentSavedBinding::i
     private val newsAdapter by lazy {
         NewsAdapter()
     }
+
     override fun observeEvents() {
-        viewModel.savedState.observe(viewLifecycleOwner){
+        viewModel.savedState.observe(viewLifecycleOwner) {
             handleState(it)
         }
     }
 
     override fun setupListeners() {
-        newsAdapter.onClick={
-            findNavController().navigate(SavedFragmentDirections.actionSavedFragmentToDetailFragment(it))
+        newsAdapter.onClick = {
+            findNavController().navigate(
+                SavedFragmentDirections.actionSavedFragmentToDetailFragment(
+                    it
+                )
+            )
         }
     }
 
     override fun onCreateFinish() {
-        binding.rvSaved.adapter=newsAdapter
+        binding.rvSaved.adapter = newsAdapter
         viewModel.getSaves()
     }
-    private fun handleState(state:SavedUiState){
-        with(binding){
-            when(state){
-                is SavedUiState.Loading->{ progressBar.visible()   }
-                is SavedUiState.SuccessSavedData->{
+
+    private fun handleState(state: SavedUiState) {
+        with(binding) {
+            when (state) {
+                is SavedUiState.Loading -> {
+                    progressBar.visible()
+                }
+                is SavedUiState.SuccessSavedData -> {
                     progressBar.gone()
                     newsAdapter.submitList(state.list)
                 }
-                is SavedUiState.Error->{
+
+                is SavedUiState.Error -> {
                     progressBar.gone()
-                    requireActivity().showMessage(state.message,FancyToast.ERROR)
+                    requireActivity().showMessage(state.message, FancyToast.ERROR)
                 }
             }
         }

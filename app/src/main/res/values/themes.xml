@@ -20,4 +20,11 @@
         <item name="android:dropDownVerticalOffset">4dp</item>
 
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
+
+
+    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    </style>
 </resources>

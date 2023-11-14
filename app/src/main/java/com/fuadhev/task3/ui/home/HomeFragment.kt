@@ -1,5 +1,6 @@
 package com.fuadhev.task3.ui.home
 
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -21,6 +24,8 @@ import com.fuadhev.task3.databinding.FragmentHomeBinding
 import com.fuadhev.task3.ui.home.adapter.NewsAdapter
 import com.fuadhev.task3.ui.home.adapter.TopNewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -36,6 +41,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         NewsAdapter()
     }
     private var lang="en"
+    private var searchText=""
+
 
 
 
@@ -47,6 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         viewModel.selectedLanguage.observe(viewLifecycleOwner){
             viewModel.getTopNews(it)
             lang=it
+            viewModel.searchNeews(lang,searchText)
             binding.btnLanguage.text=it.toUpperCase(Locale.ROOT)
         }
 
@@ -55,7 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onCreateFinish() {
         setAdapters()
         viewModel.getLanguage()
-
+        searchNews()
 
     }
 
@@ -85,26 +93,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }, 1000)
         }
 
-        searchNews()
     }
 
-
-
-
     private fun searchNews(){
+        binding.searchView.doAfterTextChanged {
+
+        }
         binding.searchView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.searchViews(lang,s.toString())
+                //sorgu limiti tez dolur deye yoruma aldim
+//                viewModel.searchViews(lang,s.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {
 
-                val searchText = s.toString()
-                viewModel.searchViews(lang,searchText)
+                searchText = s.toString()
+                viewModel.searchNeews(lang,searchText)
 
             }
         })
@@ -117,6 +125,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
     }
 
+
+
     private fun handleState(state: HomeUiState) {
         with(binding){
 
@@ -126,14 +136,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is HomeUiState.SuccessTopNewsData->{
                     loading.gone()
                     topNewsAdapter.submitList(state.list)
-                    newsAdapter.submitList(state.list)
+//                    newsAdapter.submitList(state.list)
                 }
                 is HomeUiState.SuccessSearchData->{
                     loading.gone()
                     newsAdapter.submitList(state.list) }
 
-                is HomeUiState.Error->{ loading.gone() }
-                else -> {}
+                is HomeUiState.Error->{ loading.gone()}
+
             }
 
         }

@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(private val repo:NewsRepository,private 
     }
 
 
-    fun searchViews(lang: String,query:String){
+    fun searchNeews(lang: String,query:String){
         viewModelScope.launch {
             repo.searchViews(lang,query).collectLatest {
                 when(it){

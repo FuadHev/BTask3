@@ -21,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="250dp"
             load_url="@{newsData.urlToImage}"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@drawable/news_example"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
