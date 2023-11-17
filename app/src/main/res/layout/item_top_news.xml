@@ -54,10 +54,11 @@
             android:id="@+id/txt_news"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="New Music Releases March 25: Ed Sheeran, J Balvin, Maren..."
+            tools:text = "HELLO WORLD"
             android:textColor="@color/white"
+            tools:textColor="@color/black"
             android:textSize="18sp"
-
+            android:ellipsize="end"
             android:maxLength="60"
             android:layout_margin="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/img_top_news"

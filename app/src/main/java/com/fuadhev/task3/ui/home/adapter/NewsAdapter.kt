@@ -1,30 +1,19 @@
 package com.fuadhev.task3.ui.home.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fuadhev.task3.common.utils.GenericDiffUtil
-import com.fuadhev.task3.data.network.dto.Article
 import com.fuadhev.task3.databinding.ItemNewsBinding
-import com.fuadhev.task3.databinding.ItemTopNewsBinding
 import com.fuadhev.task3.domain.model.NewsUiModel
-import com.fuadhev.task3.ui.home.HomeFragmentDirections
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 
-private val diffUtil = GenericDiffUtil<NewsUiModel>(
+class NewsAdapter: ListAdapter<NewsUiModel, NewsAdapter.NewsViewHolder>(GenericDiffUtil<NewsUiModel>(
     myItemsTheSame = { oldItem, newItem -> oldItem.title == newItem.title },
     myContentsTheSame = { oldItem, newItem -> oldItem == newItem }
-)
-
-class NewsAdapter: ListAdapter<NewsUiModel, NewsAdapter.NewsViewHolder>(diffUtil) {
+)) {
     var onClick : (NewsUiModel) -> Unit = {}
 
     inner class NewsViewHolder(val binding: ItemNewsBinding) :

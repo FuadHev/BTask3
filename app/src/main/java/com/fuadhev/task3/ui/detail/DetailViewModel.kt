@@ -22,6 +22,7 @@ class DetailViewModel @Inject constructor(private val repo: NewsRepository) : Vi
 
 
     fun addSaves(savedDTO: SavedDTO) {
+        repo.addSaves(savedDTO)
        viewModelScope.launch {
             repo.addSaves(savedDTO).collectLatest {
                 when (it) {

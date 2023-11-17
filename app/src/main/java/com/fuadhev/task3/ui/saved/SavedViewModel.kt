@@ -11,7 +11,12 @@ import com.fuadhev.task3.domain.mapper.Mapper.toNewUiModelList
 import com.fuadhev.task3.domain.repository.NewsRepository
 import com.fuadhev.task3.ui.detail.DetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,21 +24,24 @@ import javax.inject.Inject
 class SavedViewModel @Inject constructor(private val repo: NewsRepository):ViewModel() {
 
 
-    private val _savedState = MutableLiveData<SavedUiState>()
-    val savedState: LiveData<SavedUiState> get() = _savedState
+    private val _savedState = MutableStateFlow<SavedUiState>(SavedUiState.Loading)
+    val savedState get() = _savedState.asStateFlow()
+
+
+
 
 
     fun getSaves(){
-        viewModelScope.launch {
-            repo.getSaves().collectLatest {
-                when(it){
-                    is Resource.Loading->{  _savedState.value=SavedUiState.Loading }
-                    is Resource.Success->{   it.data?.let { list-> _savedState.value=SavedUiState.SuccessSavedData(list.toNewUiModelL())
-                        Log.e("saves", "$list" )}}
-                    is Resource.Error->{  _savedState.value=SavedUiState.Error(it.exception)  }
-                }
+
+        repo.getSaves().onEach {
+            when(it){
+                is Resource.Loading->{  _savedState.value=SavedUiState.Loading }
+                is Resource.Success->{   it.data?.let { list-> _savedState.value=SavedUiState.SuccessSavedData(list.toNewUiModelL())
+                    Log.e("saves", "$list" )}}
+                is Resource.Error->{  _savedState.value=SavedUiState.Error(it.exception)  }
             }
-        }
+        }.launchIn(viewModelScope)
+        
     }
 
 

@@ -1,6 +1,7 @@
 package com.fuadhev.task3.ui.home.adapter
 
 import android.content.Context
+import android.health.connect.datatypes.units.Length
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -11,12 +12,12 @@ import com.fuadhev.task3.databinding.ItemTopNewsBinding
 import com.fuadhev.task3.domain.model.NewsUiModel
 
 
-private val diffUtil = GenericDiffUtil<NewsUiModel>(
+
+
+class TopNewsAdapter : ListAdapter<NewsUiModel, TopNewsAdapter.TopNewsViewHolder>(GenericDiffUtil<NewsUiModel>(
     myItemsTheSame = { oldItem, newItem -> oldItem.title == newItem.title },
     myContentsTheSame = { oldItem, newItem -> oldItem == newItem }
-)
-
-class TopNewsAdapter : ListAdapter<NewsUiModel, TopNewsAdapter.TopNewsViewHolder>(diffUtil) {
+)) {
 
     var onClick : (NewsUiModel) -> Unit = {}
 
@@ -28,20 +29,18 @@ class TopNewsAdapter : ListAdapter<NewsUiModel, TopNewsAdapter.TopNewsViewHolder
                 txtNews.text= item.title?.let { shortTitle(it,60) }
 
                 itemNews.setOnClickListener {
-
                     onClick(item)
-
                 }
                 executePendingBindings()
             }
         }
     }
-    fun shortTitle(metin: String, maksimumKarakter: Int): String {
-        return if (metin.length <= maksimumKarakter) {
-            metin
+    fun shortTitle(title: String, maxLength: Int): String {
+        return if (title.length <= maxLength) {
+            title
         } else {
-            val kisaltilmisMetin = metin.substring(0, maksimumKarakter - 3) + "..."
-            kisaltilmisMetin
+            val shortedTitle = title.substring(0, maxLength - 3) + "..."
+            shortedTitle
         }
     }
 

@@ -1,5 +1,6 @@
 package com.fuadhev.task3.ui.home
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +14,8 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +27,8 @@ import com.fuadhev.task3.databinding.FragmentHomeBinding
 import com.fuadhev.task3.ui.home.adapter.NewsAdapter
 import com.fuadhev.task3.ui.home.adapter.TopNewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -48,15 +53,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
 
     override fun observeEvents() {
-        viewModel.homeState.observe(viewLifecycleOwner) {
-            handleState(it)
+        lifecycleScope.launch {
+            viewModel.homeState.flowWithLifecycle(lifecycle).collectLatest {
+                handleState(it)
+            }
         }
-        viewModel.selectedLanguage.observe(viewLifecycleOwner){
-            viewModel.getTopNews(it)
-            lang=it
-            viewModel.searchNeews(lang,searchText)
-            binding.btnLanguage.text=it.toUpperCase(Locale.ROOT)
+        lifecycleScope.launch {
+            viewModel.selectedLanguage.flowWithLifecycle(lifecycle).collectLatest {
+                viewModel.getTopNews(it)
+                lang=it
+                setAppLocale(updateSelectedLanguage(it))
+                viewModel.searchNews(lang,searchText)
+                binding.btnLanguage.text=it.toUpperCase(Locale.ROOT)
+            }
         }
+
+//        viewModel.selectedLanguage.observe(viewLifecycleOwner){
+//
+//        }
 
     }
 
@@ -68,8 +82,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun setupListeners() {
-
-
 
         newsAdapter.onClick={
 
@@ -85,47 +97,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.btnLanguage.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLanguageFragment())
         }
-
-        binding.refreshScreen.setOnRefreshListener {
-             viewModel.getLanguage()
-            Handler(Looper.getMainLooper()).postDelayed({
-                binding.refreshScreen.isRefreshing = false
-            }, 1000)
-        }
-
     }
 
     private fun searchNews(){
         binding.searchView.doAfterTextChanged {
-
+            searchText = it.toString()
+            viewModel.searchNews(lang,searchText)
         }
-        binding.searchView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                //sorgu limiti tez dolur deye yoruma aldim
-//                viewModel.searchViews(lang,s.toString())
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-
-                searchText = s.toString()
-                viewModel.searchNeews(lang,searchText)
-
-            }
-        })
-
     }
 
     private fun setAdapters() {
         binding.rvTopNews.adapter=topNewsAdapter
         binding.rvNews.adapter=newsAdapter
-
     }
 
+    private fun setAppLocale(locale: Locale) {
+        val resources = requireContext().resources
+        val configuration = Configuration(resources.configuration)
+        configuration.setLocale(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+    }
 
+    private fun updateSelectedLanguage(languageCode: String?) :Locale{
+        return when (languageCode) {
+            "en" -> Locale("en")
+            "ru" -> Locale("ru")
+            else -> Locale("en")
+        }
+    }
 
     private fun handleState(state: HomeUiState) {
         with(binding){
@@ -136,7 +135,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
                 is HomeUiState.SuccessTopNewsData->{
                     loading.gone()
                     topNewsAdapter.submitList(state.list)
-//                    newsAdapter.submitList(state.list)
                 }
                 is HomeUiState.SuccessSearchData->{
                     loading.gone()

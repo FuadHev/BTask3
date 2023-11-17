@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Task3</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">Поиск…</string>
+    <string name="news">Новости</string>
+    <string name="news_catcher">Ловец новостей</string>
+    <string name="march_26th_2022">26 марта 2022 г.</string>
+    <string name="finance">Финансы</string>
+</resources>

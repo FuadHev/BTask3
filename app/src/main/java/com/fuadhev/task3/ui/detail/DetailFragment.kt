@@ -30,7 +30,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 isSaved = it
             }
         }
-        viewModel.detailState.observe(viewLifecycleOwner){
+        viewModel.detailState.observe(viewLifecycleOwner) {
             it?.let {
                 handleState(it)
             }
@@ -59,17 +59,23 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
         }
     }
-    private fun handleState(state:DetailUiState){
-        when(state){
-            is DetailUiState.Loading->{   }
-            is DetailUiState.SuccessSaveNews->{
-                requireActivity().showMessage(state.message,FancyToast.SUCCESS)
+
+    private fun handleState(state: DetailUiState) {
+        when (state) {
+            is DetailUiState.Loading -> {}
+            is DetailUiState.SuccessSaveNews -> {
+                requireActivity().showMessage(state.message, FancyToast.SUCCESS)
                 viewModel.resetData()
             }
-            is DetailUiState.SuccessDeleteSave->{ requireActivity().showMessage(state.message,FancyToast.SUCCESS)
-            viewModel.resetData()}
-            is DetailUiState.Error->{  requireActivity().showMessage(state.message,FancyToast.ERROR)
-            viewModel.resetData()
+
+            is DetailUiState.SuccessDeleteSave -> {
+                requireActivity().showMessage(state.message, FancyToast.SUCCESS)
+                viewModel.resetData()
+            }
+
+            is DetailUiState.Error -> {
+                requireActivity().showMessage(state.message, FancyToast.ERROR)
+                viewModel.resetData()
             }
         }
 
@@ -82,16 +88,21 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         popupMenu.menuInflater.inflate(R.menu.more_menu, popupMenu.menu)
         popupMenu.gravity = Gravity.END
         val popmenu = popupMenu.menu.findItem(R.id.menu_save)
-        if (isSaved) popmenu.setIcon(R.drawable.ic_selected_saved) else popmenu.setIcon(R.drawable.ic_unselected_saved)
-
+        if (isSaved) {
+            popmenu.setIcon(R.drawable.ic_selected_saved)
+            popmenu.title = "Unsave"
+        } else {
+            popmenu.setIcon(R.drawable.ic_unselected_saved)
+            popmenu.title = "Save"
+        }
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_save -> {
-                    isSaved = if (isSaved){
+                    isSaved = if (isSaved) {
                         viewModel.deleteSaves(args.newsDetail.toSavedDTO())
                         false
-                    }else{
+                    } else {
                         viewModel.addSaves(args.newsDetail.toSavedDTO())
                         true
                     }
@@ -121,11 +132,11 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         }
     }
 
-    private fun shortTitle(metin: String, maksimumKarakter: Int): String {
-        return if (metin.length <= maksimumKarakter) {
-            metin
+    private fun shortTitle(txt: String, maxLength: Int): String {
+        return if (txt.length <= maxLength) {
+            txt
         } else {
-            val kisaltilmisMetin = metin.substring(0, maksimumKarakter - 3) + "..."
+            val kisaltilmisMetin = txt.substring(0, maxLength - 3) + "..."
             kisaltilmisMetin
         }
     }

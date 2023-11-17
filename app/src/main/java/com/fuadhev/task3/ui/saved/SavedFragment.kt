@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.fuadhev.task3.R
 import com.fuadhev.task3.common.base.BaseFragment
@@ -16,6 +18,8 @@ import com.fuadhev.task3.databinding.FragmentSavedBinding
 import com.fuadhev.task3.ui.home.adapter.NewsAdapter
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SavedFragment : BaseFragment<FragmentSavedBinding>(FragmentSavedBinding::inflate) {
@@ -26,9 +30,14 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(FragmentSavedBinding::i
     }
 
     override fun observeEvents() {
-        viewModel.savedState.observe(viewLifecycleOwner) {
-            handleState(it)
+        lifecycleScope.launch {
+            viewModel.savedState.flowWithLifecycle(lifecycle).collectLatest {
+                handleState(it)
+            }
         }
+//        viewModel.savedState.observe(viewLifecycleOwner) {
+//            handleState(it)
+//        }
     }
 
     override fun setupListeners() {
@@ -54,7 +63,7 @@ class SavedFragment : BaseFragment<FragmentSavedBinding>(FragmentSavedBinding::i
                 }
                 is SavedUiState.SuccessSavedData -> {
                     progressBar.gone()
-                    newsAdapter.submitList(state.list)
+                    newsAdapter.submitList(state.list.reversed())
                 }
 
                 is SavedUiState.Error -> {

@@ -19,8 +19,13 @@ class NewsRepository @Inject constructor(private val apiService: NewsApiService,
     fun getTopNews(lang:String): Flow<Resource<List<Article>>> = flow {
         emit(Resource.Loading)
         val response=apiService.getTopNews(lang)
-        val list =response.articles
-        emit(Resource.Success(list))
+        if (response.isSuccessful) {
+            val list = response.body()?.articles
+            emit(Resource.Success(list))
+        }else{
+            emit(Resource.Error("Error 404"))
+        }
+
 
     }.catch {
 
@@ -28,11 +33,17 @@ class NewsRepository @Inject constructor(private val apiService: NewsApiService,
 
     }
 
-    fun searchViews(lang: String,query:String): Flow<Resource<List<Article>>> = flow {
+    fun searchNews(lang: String,query:String): Flow<Resource<List<Article>>> = flow {
         emit(Resource.Loading)
         val response=apiService.searchNews(lang,query)
-        val list=response.articles
-        emit(Resource.Success(list))
+        if (response.isSuccessful){
+            val list=response.body()?.articles
+            emit(Resource.Success(list))
+        }else{
+            emit(Resource.Error("Error 404"))
+
+        }
+
 
     }.catch {
         emit(Resource.Error(it.localizedMessage?:"Error 404"))
