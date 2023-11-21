@@ -51,12 +51,13 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
 
     override fun onCreateFinish() {
         val newsDetail = args.newsDetail
-        with(binding) {
+      with(binding) {
             newsData = newsDetail
             btnBackTxt.text = shortTitle(newsDetail.title.toString(), 11)
             icMore.setOnClickListener {
                 popUpMenu(it)
             }
+
         }
     }
 
@@ -83,7 +84,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
     }
 
     private fun popUpMenu(view: View) {
-        val popupMenu = PopupMenu(requireActivity(), view)
+        val popupMenu = PopupMenu(requireContext(), view)
 
         popupMenu.menuInflater.inflate(R.menu.more_menu, popupMenu.menu)
         popupMenu.gravity = Gravity.END
@@ -124,7 +125,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             menu.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
                 .invoke(menu, true)
         } catch (e: Exception) {
-
             e.printStackTrace()
         } finally {
             popupMenu.show()

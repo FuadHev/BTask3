@@ -25,10 +25,11 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val repo:NewsRepository,private val sp:SharedPrefManager) : ViewModel() {
 
 
+
     private val _homeState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val homeState get() = _homeState.asStateFlow()
 
-    private val _selectedLanguage = MutableStateFlow<String>("en")
+    private val _selectedLanguage = MutableStateFlow("en")
     val selectedLanguage get() = _selectedLanguage.asStateFlow()
 
 

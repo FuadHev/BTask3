@@ -1,15 +1,17 @@
 package com.fuadhev.task3
 
 import android.content.res.Configuration
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.View.GONE
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.fuadhev.task3.databinding.ActivityMainBinding
 import com.fuadhev.task3.ui.home.HomeViewModel
-import com.fuadhev.task3.ui.language.LanguageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -24,12 +26,17 @@ class MainActivity : AppCompatActivity() {
         binding=ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         viewModel.getLanguage()
 
         setAppLocale(updateSelectedLanguage(viewModel.getLanguage()))
 
         setBottomNav()
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = Color.BLACK
+
 
 
 
@@ -58,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             NavigationUI.onNavDestinationSelected(it,navController)
             true
         }
+
     }
 
 

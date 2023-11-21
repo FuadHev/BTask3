@@ -2,10 +2,12 @@ package com.fuadhev.task3.data.local.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import org.jetbrains.annotations.NotNull
 
 @Entity("saved_news")
 data class SavedDTO (
-    val author: String?,
+
+    val author: String? ,
     val content: String?,
     val description: String?,
     val publishedAt: String?,

@@ -1,7 +1,5 @@
 package com.fuadhev.task3.common.utils
 
-import android.graphics.Paint
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.fuadhev.task3.R

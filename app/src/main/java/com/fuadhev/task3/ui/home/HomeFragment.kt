@@ -1,7 +1,10 @@
 package com.fuadhev.task3.ui.home
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
+import android.os.Build.VERSION_CODES.M
+import android.os.Build.VERSION_CODES.O
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +14,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -68,6 +73,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             }
         }
 
+      
+
 //        viewModel.selectedLanguage.observe(viewLifecycleOwner){
 //
 //        }
@@ -100,9 +107,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     private fun searchNews(){
-        binding.searchView.doAfterTextChanged {
-            searchText = it.toString()
-            viewModel.searchNews(lang,searchText)
+        binding.searchView.setOnEditorActionListener { text, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchText = text.text.toString()
+                viewModel.searchNews(lang, searchText)
+
+                val inputMethodManager =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(text.windowToken, 0)
+
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
         }
     }
 

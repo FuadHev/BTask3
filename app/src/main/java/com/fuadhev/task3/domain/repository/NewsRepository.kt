@@ -14,39 +14,44 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class NewsRepository @Inject constructor(private val apiService: NewsApiService,private val savedDao:SavedDAO) {
+class NewsRepository @Inject constructor(
+    private val apiService: NewsApiService,
+    private val savedDao: SavedDAO
+) {
 
-    fun getTopNews(lang:String): Flow<Resource<List<Article>>> = flow {
+
+
+    fun getTopNews(lang: String): Flow<Resource<List<Article>>> = flow {
         emit(Resource.Loading)
-        val response=apiService.getTopNews(lang)
+        val response = apiService.getTopNews(lang)
         if (response.isSuccessful) {
             val list = response.body()?.articles
             emit(Resource.Success(list))
-        }else{
+        } else {
             emit(Resource.Error("Error 404"))
         }
 
 
     }.catch {
 
-        emit(Resource.Error(it.localizedMessage?:"Error 404"))
+        emit(Resource.Error(it.localizedMessage ?: "Error 404"))
 
     }
 
-    fun searchNews(lang: String,query:String): Flow<Resource<List<Article>>> = flow {
+    fun searchNews(lang: String, query: String): Flow<Resource<List<Article>>> = flow {
         emit(Resource.Loading)
-        val response=apiService.searchNews(lang,query)
-        if (response.isSuccessful){
-            val list=response.body()?.articles
+        val response = apiService.searchNews(lang, query)
+        if (response.isSuccessful) {
+            val list = response.body()?.articles
             emit(Resource.Success(list))
-        }else{
+        } else {
             emit(Resource.Error("Error 404"))
 
         }
 
 
     }.catch {
-        emit(Resource.Error(it.localizedMessage?:"Error 404"))
+        emit(Resource.Error(it.localizedMessage ?: "Error 404"))
     }
 
 
@@ -58,24 +63,24 @@ class NewsRepository @Inject constructor(private val apiService: NewsApiService,
         emit(Resource.Error(it.localizedMessage ?: "Error 404"))
     }.flowOn(Dispatchers.IO)
 
-    fun isNewsSaved(title: String) : Flow<Boolean> = flow {
+    fun isNewsSaved(title: String): Flow<Boolean> = flow {
         val response = savedDao.isNewsSaved(title)
         emit(response)
     }.flowOn(Dispatchers.IO)
 
-    fun addSaves(savedDto:SavedDTO):Flow<Resource<Boolean>> = flow {
+    fun addSaves(savedDto: SavedDTO): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading)
         savedDao.addSaves(savedDto)
         emit(Resource.Success(true))
     }.catch {
-        emit(Resource.Error(it.localizedMessage?:"Error 404"))
+        emit(Resource.Error(it.localizedMessage ?: "Error 404"))
     }.flowOn(Dispatchers.IO)
 
-    fun deleteNews(savedDto:SavedDTO):Flow<Resource<Boolean>> = flow {
+    fun deleteNews(savedDto: SavedDTO): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading)
         savedDao.deleteNews(savedDto)
         emit(Resource.Success(true))
     }.catch {
-        emit(Resource.Error(it.localizedMessage?:"Error 404"))
+        emit(Resource.Error(it.localizedMessage ?: "Error 404"))
     }.flowOn(Dispatchers.IO)
 }

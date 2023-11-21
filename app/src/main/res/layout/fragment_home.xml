@@ -55,6 +55,7 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
+            android:background="@null"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,15 +67,14 @@
                 android:id="@+id/app_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                android:background="@color/white">
 
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white"
-                    app:contentScrim="@null"
+                    app:contentScrim="@android:color/transparent"
                     app:layout_scrollFlags="scroll|enterAlways">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -121,12 +121,11 @@
                     android:hint="@string/search"
                     android:inputType="text"
                     android:padding="10dp"
+                    android:imeOptions="actionSearch"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- Diğer bileşenler buraya eklenecek -->
 
                 <Button
                     android:id="@+id/btn_language"

@@ -1,5 +1,7 @@
 package com.fuadhev.task3.data.network.dto
 
+import kotlinx.coroutines.flow.MutableStateFlow
+
 data class Article(
     val author: String?,
     val content: String?,

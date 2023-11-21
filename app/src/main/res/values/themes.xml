@@ -3,7 +3,7 @@
     <style name="Base.Theme.Task3" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
 
     </style>
@@ -11,6 +11,7 @@
     <style name="Theme.Task3" parent="Base.Theme.Task3" >
         <item name="popupMenuBackground">@drawable/bg_more_menu</item>
         <item name="android:popupMenuStyle">@style/PopUpBgStyle</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
 
     </style>
 
