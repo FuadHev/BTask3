@@ -2,6 +2,7 @@ package com.fuadhev.task3.ui.detail
 
 import android.content.Intent
 import android.net.Uri
+import android.transition.TransitionInflater
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
@@ -15,6 +16,7 @@ import com.fuadhev.task3.databinding.FragmentDetailBinding
 import com.fuadhev.task3.domain.mapper.Mapper.toSavedDTO
 import com.shashank.sony.fancytoastlib.FancyToast
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
@@ -23,6 +25,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
     private val args by navArgs<DetailFragmentArgs>()
     private val viewModel by viewModels<DetailViewModel>()
     private var isSaved: Boolean = false
+//    private val detailsViewModel: CharacterDetailsViewModel by navGraphViewModels(R.id.home_navigation_graph)
 
     override fun observeEvents() {
         args.newsDetail.title?.let {
@@ -59,6 +62,12 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
 
         }
+
+        val animation = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        sharedElementEnterTransition = animation
+        postponeEnterTransition(500, TimeUnit.MILLISECONDS)
+
+        binding.imgNews.transitionName=args.newsDetail.urlToImage
     }
 
     private fun handleState(state: DetailUiState) {

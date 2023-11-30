@@ -2,11 +2,13 @@ package com.fuadhev.task3.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fuadhev.task3.common.utils.GenericDiffUtil
 import com.fuadhev.task3.databinding.ItemNewsBinding
 import com.fuadhev.task3.domain.model.NewsUiModel
+import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
 
 
@@ -16,6 +18,7 @@ class NewsAdapter: ListAdapter<NewsUiModel, NewsAdapter.NewsViewHolder>(GenericD
 )) {
     var onClick : (NewsUiModel) -> Unit = {}
 
+    lateinit var onClickListener: (NewsUiModel, ShapeableImageView)-> Unit
     inner class NewsViewHolder(val binding: ItemNewsBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NewsUiModel) {
@@ -25,10 +28,12 @@ class NewsAdapter: ListAdapter<NewsUiModel, NewsAdapter.NewsViewHolder>(GenericD
                 binding.txtTitle.text= item.title?.let { shortAuthor(it, 80) }
 
                 txtAuthor.text=shortAuthor(item.author?:"Anonym", 18)
+                imgNews.transitionName=item.urlToImage
 
                 itemNews.setOnClickListener {
 
-                    onClick(item)
+                    onClickListener(item,binding.imgNews)
+//                    onClick(item)
                 }
 
 

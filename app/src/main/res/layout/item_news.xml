@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:layout_marginEnd="8dp"
+            android:transitionName="img_news"
             android:fontFamily="@font/inter_bold"
             android:text="Factbox: Who is stasdadaadasdadsdaddsadsadsadsdasdsdsadsdadasdaill buying Russian crude oil?"
             app:layout_constraintEnd_toStartOf="@+id/img_news"

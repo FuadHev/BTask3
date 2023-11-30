@@ -17,11 +17,14 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
+import androidx.core.view.doOnPreDraw
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fuadhev.task3.R
@@ -52,6 +55,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
     private var lang="en"
     private var searchText=""
+
+//    val a:SavedStateHandle=SavedStateHandle()
+
+
 
 
 
@@ -104,6 +111,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         binding.btnLanguage.setOnClickListener {
             findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToLanguageFragment())
         }
+
+        newsAdapter.onClickListener={news,img->
+            val directions=HomeFragmentDirections.actionHomeFragmentToDetailFragment(news)
+            val extras = FragmentNavigatorExtras(
+                img to news.urlToImage!!
+            )
+            findNavController().navigate(directions,extras)
+        }
+
+        postponeEnterTransition()
+        binding.rvNews.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
+
     }
 
     private fun searchNews(){

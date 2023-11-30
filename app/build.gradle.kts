@@ -53,7 +53,6 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     val navVersion = "2.7.4"
     val lifecycleVersion = "2.6.1"
-    val lottieVersion = "5.2.0"
     val roomVersion = "2.6.0"
 
     //Navigation Components
@@ -96,7 +95,6 @@ dependencies {
     //Room
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.room:room-runtime:$roomVersion")
-
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 

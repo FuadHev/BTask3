@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.fuadhev.task3.data.local.dto.SavedDTO
 
-@Database(entities = [SavedDTO::class], version = 1, exportSchema = true)
+@Database(entities = [SavedDTO::class], version = 1,exportSchema = true)
 abstract class SavedDB:RoomDatabase() {
 
     abstract fun getSavedDao():SavedDAO

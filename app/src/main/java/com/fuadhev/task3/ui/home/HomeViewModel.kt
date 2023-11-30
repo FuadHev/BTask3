@@ -67,6 +67,7 @@ class HomeViewModel @Inject constructor(private val repo:NewsRepository,private 
                         it1.toNewUiModelList()
                     )
                 } ?: HomeUiState.Error("Melumat tapilmadi")
+
                 }
                 is Resource.Error -> { _homeState.value=  HomeUiState.Error(it.exception)  }
 
